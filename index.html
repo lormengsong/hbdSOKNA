@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎉 Happy Birthday YOEURM SOKNA 🎂</title>
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/9132/9132534.png" type="image/x-icon">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+      font-family: 'Pacifico', cursive;
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    .container {
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 0.5rem 0;
+      text-shadow: 0 0 10px #ff69b4;
+      animation: pulse 2s infinite;
+    }
+
+    .wishing {
+      margin-top: 1rem;
+    }
+
+    .wishing h2 {
+      font-size: 2.5rem;
+      color: #ff1493;
+      text-shadow: 0 0 8px #ff69b4;
+    }
+
+    .wishing p {
+      font-size: 1.5rem;
+      color: #ffffff;
+      text-shadow: 0 0 6px #ff69b4;
+    }
+
+    .countdown {
+      font-size: 1.3rem;
+      margin-top: 0.8rem;
+      color: #cc0066;
+      font-weight: bold;
+    }
+
+    .typing {
+      font-size: 1.2rem;
+      margin-top: 2rem;
+      min-height: 50px;
+      color: #fff;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .birthday-img {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
+      margin-top: 20px;
+    }
+
+    audio {
+      margin-top: 2rem;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fireworks"></canvas>
+
+  <div class="container">
+    <h1>🎉 Happy Birthday 🎂</h1>
+
+    <img src="image/1.jpg" alt="Birthday Girl" class="birthday-img" />
+
+    <div class="wishing">
+      <h2>YOEURM SOKNA</h2>
+      <p>🎂 15th October 2025 🎂</p>
+      <div id="countdown" class="countdown"></div>
+    </div>
+
+    <div class="typing" id="typing-text"></div>
+
+    <!-- Music -->
+    <audio controls autoplay loop>
+      <source src="hbd_song.mp3" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <script>
+    // 🎆 Fireworks Canvas Animation
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let fireworks = [];
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    class Firework {
+      constructor() {
+        this.x = random(0, canvas.width);
+        this.y = random(0, canvas.height / 2);
+        this.radius = random(1, 3);
+        this.color = `hsl(${random(0, 360)}, 100%, 70%)`;
+        this.speedX = random(-2, 2);
+        this.speedY = random(-2, 2);
+        this.life = 100;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life--;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    function animate() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (Math.random() < 0.1) {
+        for (let i = 0; i < 20; i++) {
+          fireworks.push(new Firework());
+        }
+      }
+      fireworks.forEach((fw, index) => {
+        fw.update();
+        fw.draw();
+        if (fw.life <= 0) fireworks.splice(index, 1);
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // ⏳ Countdown
+    function updateCountdown() {
+      const countdown = document.getElementById("countdown");
+      const birthday = new Date("2025-10-15T00:00:00").getTime();
+      const now = new Date().getTime();
+      const distance = birthday - now;
+
+      if (distance < 0) {
+        countdown.innerHTML = "🎉 It's your birthday today! 🎉";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdown.innerHTML = `Countdown: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // ❤️ Typing Animation
+    const text = "Wishing you a day filled with love, laughter, and unforgettable moments. May all your dreams come true!";
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typing-text").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50);
+      }
+    }
+
+    typeWriter();
+  </script>
+</body>
+</html>
